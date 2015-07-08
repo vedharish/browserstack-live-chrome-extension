@@ -4,6 +4,7 @@ $(function(){
   $("#typeDropdown").bind("change", getOSList);
   $("#osDropdown").bind("change", getDevice);
   $("#devicesDropdown").bind("change", getURL);
+  $("#redirectButton").bind("click", goTest);
   document.getElementById("yey").innerHTML += "asdqwe";
   $.ajax({
     'url' : 'https://www.browserstack.com/list-of-browsers-and-platforms.json?product=live',
@@ -39,6 +40,10 @@ function getDevice(){
   }
 };
 
+function goTest(){
+  chrome.tabs.create({url: getURL(), selected: true});
+};
+
 function getURL(){
   deviceDict = getCompleteDetails($('#typeDropdown').val(), $('#osDropdown').val(), $('#devicesDropdown').val());
   urlString = "https://www.browserstack.com/start#";
@@ -48,9 +53,9 @@ function getURL(){
   //urlString += "&browser=IE";
   //urlString += "&browser_version=8.0";
   urlString += "&scale_to_fit=true";
-  urlString += "&url=www.google.com";
+  urlString += "&url="+($('#urlInput').val() == "" ? 'www.google.com' : $('#urlInput').val());
   urlString += "&resolution=1024x768&speed=1&start=true";
-  alert(urlString);
+  return urlString;
 };
 
 function getOSFromJSON(type){
