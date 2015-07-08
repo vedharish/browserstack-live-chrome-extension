@@ -100,34 +100,27 @@ function getDevicesOrBrowsersFromJSON(type, os_display_name, typeToRetrieve){
 };
 
 function getCompleteDetails(type, os_display_name, value){
-  if(type == "mobile"){
-    devicesList = getDevicesOrBrowsersFromJSON(type, os_display_name, 'devices');
-    for(var iter=0; iter<devicesList.length; iter++){
-      if(devicesList[iter]['device'] == value){
-        returnDict = devicesList[iter];
-        osList = getOSFromJSON(type);
-        for(var iter = 0; iter<osList.length; iter++){
-          if(osList[iter]['os_display_name'] == os_display_name){
-            returnDict['os'] = osList[iter]['os'];
-            return returnDict;
+  if(type == 'mobile'){
+    retrieve = 'devices';
+    valueText = 'device';
+  }else{
+    retrieve = 'browsers';
+    valueText = 'display_name';
+  }
+  List = getDevicesOrBrowsersFromJSON(type, os_display_name, retrieve);
+  for(var iter=0; iter<List.length; iter++){
+    if(List[iter][valueText] == value){
+      returnDict = List[iter];
+      osList = getOSFromJSON(type);
+      for(var iter = 0; iter<osList.length; iter++){
+        if(osList[iter]['os_display_name'] == os_display_name){
+          returnDict['os'] = osList[iter]['os'];
+          if(type != 'mobile'){
+            returnDict['os_version'] = osList[iter]['os_version'];
           }
+          return returnDict;
         }
       }
-    };
-  }else{
-    browsersList = getDevicesOrBrowsersFromJSON(type, os_display_name, 'browsers');
-    for(var iter=0; iter<browsersList.length; iter++){
-      if(browsersList[iter]['display_name'] == value){
-        returnDict = browsersList[iter];
-        osList = getOSFromJSON(type);
-        for(var iter=0; iter<osList.length; iter++){
-          if(osList[iter]['os_display_name'] == os_display_name){
-            returnDict['os'] = osList[iter]['os'];
-            returnDict['os_version'] = osList[iter]['os_version'];
-            return returnDict;
-          };
-        };
-      }
-    };
-  }
+    }
+  };
 };
