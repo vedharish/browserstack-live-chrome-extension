@@ -5,7 +5,6 @@ $(function(){
   $("#osDropdown").bind("change", getTypeSpecific);
   $("#devicesDropdown").bind("change", getURL);
   $("#redirectButton").bind("click", goTest);
-  document.getElementById("yey").innerHTML += "asdqwe";
   $.ajax({
     'url' : 'https://www.browserstack.com/list-of-browsers-and-platforms.json?product=live',
     'type' : 'GET',
@@ -43,18 +42,20 @@ function getOSList(){
 function getTypeSpecific(){
   var type = $('#typeDropdown').val();
   var os_display_name = $('#osDropdown').val();
+  var retrieve, elementId, valueText;
   if(type == 'mobile'){
-    devicesList = getDevicesOrBrowsersFromJSON(type, os_display_name, 'devices');
-    $('#devicesDropdown').find('option').remove();
-    for(var iter=0; iter < devicesList.length; iter++){
-      $('#devicesDropdown').append('<option value='+JSON.stringify(devicesList[iter]['device'])+'>'+devicesList[iter]['display_name']+'</option>');
-    }
+    retrieve = 'devices';
+    elementId = '#devicesDropdown';
+    valueText = 'device';
   }else{
-    browsersList = getDevicesOrBrowsersFromJSON(type, os_display_name, 'browsers');
-    $('#browserDropdown').find('option').remove();
-    for(var iter=0; iter<browsersList.length; iter++){
-      $('#browserDropdown').append('<option value='+JSON.stringify(browsersList[iter]['display_name'])+'>'+browsersList[iter]['display_name']+'</option>');
-    };
+    retrieve = 'browsers';
+    elementId = '#browserDropdown';
+    valueText = 'display_name';
+  }
+  List = getDevicesOrBrowsersFromJSON(type, os_display_name, retrieve);
+  $(elementId).find('option').remove();
+  for(var iter=0; iter < List.length; iter++){
+    $(elementId).append('<option value='+JSON.stringify(List[iter][valueText])+'>'+List[iter]['display_name']+'</option>');
   }
 };
 
