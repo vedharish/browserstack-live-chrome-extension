@@ -1,0 +1,19 @@
+{
+  "manifest_version": 2,
+
+  "name": "BrowserStack Extension",
+  "description": "This extension allows you to log in to a live session at browserstack.com",
+  "version": "1.0",
+
+  "browser_action": {
+    "default_title": "Create a BrowserStack Live session",
+    "default_icon": "icon.png",
+    "default_popup": "popup.html"
+  },
+  "permissions": [
+    "activeTab",
+    "https://ajax.googleapis.com/",
+    "https://*/*",
+    "http://*/*"
+  ]
+}
